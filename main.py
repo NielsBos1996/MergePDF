@@ -249,24 +249,6 @@ class MainPage(QtWidgets.QMainWindow):
         self.toolButton_choose_files.setEnabled(True)
         logging.info('Files uploaded: {}'.format(len(self.files_total)))
 
-    # Save merged file
-    # def save_as(self):
-    #     if self.last_path:
-    #         files, _ = QFileDialog.getSaveFileName(self, " ", self.last_path,
-    #                                                 self.files_filename_window)
-    #     else:
-
-    #     if files:
-    #         file, extension = os.path.splitext(files)
-    #         if extension:  # Check file extension
-    #             if '.pdf' in extension:
-    #                 logging.info('Save file as: {}'.format(files))
-    #             else:
-    #                 self.warningbox(self.extension_fail + ' (' + extension + ')')
-    #                 logging.error('Save file as: {} is not allowed'.format(extension))
-    #         else:
-    #             logging.info('Save file as: {}.pdf'.format(files))
-
     # Merge Files
     def merge_files(self):
         if self.last_path:
@@ -310,7 +292,8 @@ class MainPage(QtWidgets.QMainWindow):
 
         try:
             pdf_file_objs = [open(file, 'rb') for file in self.files_total]
-            readers = [PyPDF2.PdfFileReader(pdf_file_obj) for pdf_file_obj in pdf_file_objs]
+            readers = [PyPDF2.PdfFileReader(pdf_file_obj, strict=False) for
+                       pdf_file_obj in pdf_file_objs]
             for file in readers:
                 for page in range(file.numPages):
                     writer.addPage(file.getPage(page))
